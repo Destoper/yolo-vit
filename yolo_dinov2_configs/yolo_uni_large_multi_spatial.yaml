@@ -1,0 +1,41 @@
+# YOLO-UNI Combined Config (Multi-Layer + Spatial Refinement)
+
+# Parameters
+nc: 80  # Number of classes for Pascal VOC
+
+# Model scaling parameters
+scales:
+  # [depth, width, max_channels]
+  n: [1, 1, 1024]  # UNI has 1024 feature dimensions (ViT-L)
+
+# Backbone configuration
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, UNIMultiLayerPatches, [1024, [5, 11, 17, 23], 'list']]  # Multi-layer features
+  
+  # Extract each layer and apply spatial refinement
+  - [0, 1, Index, [0]]  # 1: output from layer 5 [1, 1024, 14, 14]
+  - [-1, 1, Conv, [512, 3, 1]]  # 2: Add spatial refinement to layer 5
+  - [-1, 1, SPPF, [512, 5]]  # 3: Multi-scale feature fusion
+  
+  - [0, 1, Index, [1]]  # 4: output from layer 11 [1, 1024, 14, 14]
+  - [-1, 1, Conv, [512, 3, 1]]  # 5: Add spatial refinement to layer 11
+  - [-1, 1, SPPF, [512, 5]]  # 6: Multi-scale feature fusion
+  
+  - [0, 1, Index, [2]]  # 7: output from layer 17 [1, 1024, 14, 14]
+  - [-1, 1, Conv, [512, 3, 1]]  # 8: Add spatial refinement to layer 17
+  - [-1, 1, SPPF, [512, 5]]  # 9: Multi-scale feature fusion
+  
+  - [0, 1, Index, [3]]  # 10: output from layer 23 [1, 1024, 14, 14]
+  - [-1, 1, Conv, [512, 3, 1]]  # 11: Add spatial refinement to layer 23
+  - [-1, 1, C3, [512]]  # 12: Additional feature refinement
+  - [-1, 1, SPPF, [512, 5]]  # 13: Multi-scale feature fusion
+
+# Optional: Add feature fusion path
+  - [[3, 6, 9, 13], 1, Concat, [1]]  # 14: Concatenate all refined features
+  - [-1, 1, Conv, [1024, 1, 1]]  # 15: Fuse multi-layer features
+
+# Head configuration
+head:
+  # Option 1: Use individual refined features
+  - [[3, 6, 9, 13], 1, Segment, [nc, 32, 256]]

@@ -1,0 +1,21 @@
+# yolo-uni.yaml
+
+# Parameters
+nc: 80  # Number of classes for Pascal VOC
+
+# Model scaling parameters
+scales:
+  # [depth, width, max_channels]
+  n: [1, 1, 4096]  # UNI has 4096 feature dimensions (ViT-L)
+
+# Backbone configuration
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, UNIMultiLayerPatches, [4096, [5, 11, 17, 23], 'concat']]  # UNI outputs feature maps from multiple layers
+
+# Head configuration
+head:
+  # [from, repeats, module, args]
+  # reduce channels to 1024
+  - [-1, 1, Conv, [4096, 1024]]  # Reduce channels to 1024
+  - [[-1], 1, Segment, [nc, 32, 256]]

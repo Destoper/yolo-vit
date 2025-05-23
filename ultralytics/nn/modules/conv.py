@@ -20,6 +20,7 @@ __all__ = (
     "SpatialAttention",
     "CBAM",
     "Concat",
+    "Index",
     "RepConv",
 )
 
@@ -330,3 +331,33 @@ class Concat(nn.Module):
     def forward(self, x):
         """Forward pass for the YOLOv8 mask Proto module."""
         return torch.cat(x, self.d)
+
+class Index(nn.Module):
+    """
+    Returns a particular index of the input.
+
+    Attributes:
+        index (int): Index to select from input.
+    """
+
+    def __init__(self, index=0):
+        """
+        Initialize Index module.
+
+        Args:
+            index (int): Index to select from input.
+        """
+        super().__init__()
+        self.index = index
+
+    def forward(self, x):
+        """
+        Select and return a particular index from input.
+
+        Args:
+            x (List[torch.Tensor]): List of input tensors.
+
+        Returns:
+            (torch.Tensor): Selected tensor.
+        """
+        return x[self.index]

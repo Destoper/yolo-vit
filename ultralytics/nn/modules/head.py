@@ -177,6 +177,7 @@ class Segment(Detect):
 
     def __init__(self, nc=80, nm=32, npr=256, ch=()):
         """Initialize the YOLO model attributes such as the number of masks, prototypes, and the convolution layers."""
+        print(f"All the parameters: nc={nc}, nm={nm}, npr={npr}, ch={ch}")
         super().__init__(nc, ch)
         self.nm = nm  # number of masks
         self.npr = npr  # number of protos

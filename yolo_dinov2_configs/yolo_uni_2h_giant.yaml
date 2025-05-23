@@ -1,0 +1,19 @@
+# yolov8-uni2h.yaml
+
+# Parameters
+nc: 80  # Number of classes for Pascal VOC
+
+# Model scaling parameters
+scales:
+  # [depth, width, max_channels]
+  n: [1, 1, 1536]  # Adjusted to match UNI2-H output dimension
+
+# Backbone configuration
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, UNI2Patches, [1536]]  # UNI2-H outputs 1536 channels
+
+# Head configuration
+head:
+  # [from, repeats, module, args]
+  - [[-1], 1, Segment, [nc, 32, 256]]  # Segmentation head

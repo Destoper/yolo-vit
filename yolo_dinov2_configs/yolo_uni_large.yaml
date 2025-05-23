@@ -1,0 +1,19 @@
+# yolo-uni.yaml
+
+# Parameters
+nc: 80  # Number of classes for Pascal VOC
+
+# Model scaling parameters
+scales:
+  # [depth, width, max_channels]
+  n: [1, 1, 1024]  # UNI has 1024 feature dimensions (ViT-L)
+
+# Backbone configuration
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, UNIPatches, [1024]]  # UNI outputs 1024 channels
+
+# Head configuration
+head:
+  # [from, repeats, module, args]
+  - [[-1], 1, Segment, [nc, 32, 256]]  # Same segmentation head as DinoV2

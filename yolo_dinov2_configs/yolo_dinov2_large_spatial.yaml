@@ -13,6 +13,12 @@ backbone:
   # [from, repeats, module, args]
   - [-1, 1, DinoV2Patches, [1024, 'large']]  # Outputs 1024 channels
 
+# Add localization layers
+  - [-1, 1, Conv, [512, 3, 1]]  # Reduce channels, add spatial refinement
+  - [-1, 1, nn.Upsample, [None, 2, 'nearest']]  # Optional: increase resolution 
+  - [-1, 3, C3, [512]]  # Add YOLO C3 block for better feature refinement
+  - [-1, 1, SPPF, [512, 5]]  # Multi-scale feature fusion
+
 # Head configuration
 head:
   # [from, repeats, module, args]

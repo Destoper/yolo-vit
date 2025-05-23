@@ -17,7 +17,7 @@ Example:
     ```
 """
 
-from .pretrained_vit import DinoV2Patches
+from .pretrained_vit import DinoV2Patches, UNIPatches, EnhancedUNIPatches, UNIMultiLayerPatches
 from .block import (
     C1,
     C2,
@@ -62,6 +62,7 @@ from .conv import (
     CBAM,
     ChannelAttention,
     Concat,
+    Index,
     Conv,
     Conv2,
     ConvTranspose,
@@ -101,6 +102,7 @@ __all__ = (
     "SpatialAttention",
     "CBAM",
     "Concat",
+    "Index",
     "TransformerLayer",
     "TransformerBlock",
     "MLPBlock",
@@ -158,4 +160,7 @@ __all__ = (
     "Attention",
     "PSA",
     "DinoV2Patches",
+    "UNIPatches",
+    "EnhancedUNIPatches",
+    "UNIMultiLayerPatches",
 )
